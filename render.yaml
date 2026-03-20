@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: prenatal-ultrasound-system
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: FLASK_ENV
+        value: production
+    disk:
+      name: data
+      mountPath: /app/data
+      sizeGB: 1
