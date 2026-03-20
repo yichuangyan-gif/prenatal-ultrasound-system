@@ -776,7 +776,9 @@ if __name__ == '__main__':
     # 生产环境使用 0.0.0.0，开发环境使用 127.0.0.1
     import os
     host = os.environ.get('HOST', '127.0.0.1')
-    port = int(os.environ.get('PORT', 8088))
+    # 获取端口，支持 Railway 和其他平台
+    port = os.environ.get('PORT') or os.environ.get('RAILWAY_PORT') or '8088'
+    port = int(port)
     debug = os.environ.get('FLASK_ENV') != 'production'
     
     app.run(
