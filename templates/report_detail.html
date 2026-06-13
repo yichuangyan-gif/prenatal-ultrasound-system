@@ -31,6 +31,18 @@
         .stamp { width: 80px; height: 80px; border: 2px solid #c00; border-radius: 50%; margin: 10px auto; display: flex; align-items: center; justify-content: center; color: #c00; font-size: 11px; font-weight: bold; transform: rotate(-15deg); }
         .footer { text-align: center; font-size: 11px; color: #666; padding: 10px; background: #f0f0f0; }
         .disclaimer { font-size: 11px; color: #c00; text-align: center; padding: 5px; }
+
+        /* 真实彩超影像样式 */
+        .ultrasound-section { background: #0a0a0a; padding: 15px; border: 12px solid #1a1a1a; border-radius: 8px; box-shadow: inset 0 0 30px rgba(0,0,0,0.8); }
+        .ultrasound-header { background: #111; color: #0f0; font-family: 'Roboto Mono', monospace; padding: 4px 10px; font-size: 11px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .ultrasound-image-container { position: relative; background: #000; border: 4px solid #222; overflow: hidden; }
+        .ultrasound-image-container img { width: 100%; display: block; filter: contrast(1.1) saturate(1.3); }
+        .ultrasound-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .ultrasound-overlay .info-bar { position: absolute; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #0f0; font-size: 10px; padding: 2px 8px; font-family: 'Roboto Mono', monospace; }
+        .ultrasound-overlay .scale { position: absolute; right: 8px; top: 30px; bottom: 30px; width: 4px; background: repeating-linear-gradient(transparent, transparent 10px, #0f0 10px, #0f0 12px); }
+        .ultrasound-overlay .color-bar { position: absolute; bottom: 8px; left: 8px; background: linear-gradient(to right, blue, cyan, yellow, red); width: 60px; height: 8px; border: 1px solid #0f0; }
+        .ultrasound-label { position: absolute; color: #0f0; font-size: 11px; font-family: 'Roboto Mono', monospace; text-shadow: 0 0 3px #000; }
+
         @media print { body { background: white; padding: 0; } .report-container { box-shadow: none; border: none; } }
     </style>
 </head>
@@ -72,7 +84,7 @@
             <div style="font-size:13px; color:#555;">单胎 / 头位 / 胎心率 {{ report[17] or '正常' }} 次/分 | 羊水指数 {{ report[14] or '-' }} cm | 胎盘位置 {{ report[15] or '-' }} | 成熟度 {{ report[16] or '-' }}</div>
         </div>
 
-        <!-- Biometry Table - Real Amcare style -->
+        <!-- Biometry Table -->
         <div class="section">
             <div class="section-title">胎儿生物测量参数（参考ISUOG & 美中宜和标准）</div>
             <table class="biometry">
@@ -97,54 +109,73 @@
             </table>
         </div>
 
-        <!-- Growth Chart placeholder (realistic) -->
+        <!-- 真实胎儿彩超影像区域 -->
         <div class="section">
-            <div class="section-title">胎儿生长曲线评估</div>
-            <div style="height: 160px; background: #f8f9fa; border: 1px solid #0066a1; position: relative; overflow: hidden;">
-                <svg width="100%" height="160" style="position:absolute; top:0; left:0;">
-                    <!-- Simple growth chart axes -->
-                    <line x1="40" y1="140" x2="40" y2="20" stroke="#0066a1" stroke-width="1.5"/>
-                    <line x1="40" y1="140" x2="520" y2="140" stroke="#0066a1" stroke-width="1.5"/>
-                    <text x="15" y="85" font-size="11" fill="#004d80" transform="rotate(-90 15 85)">百分位</text>
-                    <text x="280" y="155" font-size="11" fill="#004d80" text-anchor="middle">孕周</text>
-                    <!-- Percentile lines -->
-                    <path d="M40,120 Q200,90 520,50" fill="none" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4,2"/>
-                    <path d="M40,100 Q200,70 520,30" fill="none" stroke="#4ecdc4" stroke-width="1.5"/>
-                    <path d="M40,80 Q200,50 520,20" fill="none" stroke="#45b7d1" stroke-width="1.5"/>
-                    <!-- Current point -->
-                    <circle cx="280" cy="75" r="5" fill="#c00" stroke="#fff" stroke-width="2"/>
-                    <text x="290" y="70" font-size="11" fill="#c00">当前测量</text>
-                </svg>
-                <div style="position:absolute; bottom:5px; right:10px; font-size:10px; color:#666;">50th %ile 参考线（美中宜和标准）</div>
+            <div class="section-title">胎儿彩超影像（Color Doppler Mode）</div>
+            <div class="ultrasound-section">
+                <div class="ultrasound-header">
+                    <span>GE Voluson E10 &nbsp;|&nbsp; Color Doppler &nbsp;|&nbsp; 5.0MHz &nbsp;|&nbsp; MI: 0.8 &nbsp; TIS: 0.3</span>
+                    <span>{{ report[3] or '日期' }} {{ report[5] }}w{{ report[6] }}d</span>
+                </div>
+
+                <div class="ultrasound-image-container" style="max-width: 100%;">
+                    {% if report[20] %}
+                        <img src="{{ report[20] }}" alt="胎儿彩超影像" style="max-height: 420px; width: 100%; object-fit: contain;">
+                    {% else %}
+                        <!-- 真实彩超风格占位 -->
+                        <div style="height: 380px; background: #001a00; position: relative; display: flex; align-items: center; justify-content: center; color: #0f0; font-family: 'Roboto Mono', monospace; font-size: 13px; text-align: center; border: 2px solid #003300;">
+                            <div>
+                                <div style="font-size: 18px; margin-bottom: 8px; color: #0f0;">REAL COLOR DOPPLER</div>
+                                <div>胎儿心脏四腔心切面 | Color Flow Mapping</div>
+                                <div style="margin: 12px 0; font-size: 11px; opacity: 0.7;">请在“AI生成图像”页面生成或上传真实彩超影像</div>
+                                <div style="font-size: 10px; color: #0a0;">GE Healthcare | Depth: 12cm | Gain: 65 | PRF: 1.2kHz</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- 真实超声机叠加信息 -->
+                    <div class="ultrasound-overlay">
+                        <div class="info-bar">{{ report[25] or '患者' }} &nbsp;|&nbsp; {{ report[5] }}w{{ report[6] }}d &nbsp;|&nbsp; ID: {{ report[2] }}</div>
+                        <div class="ultrasound-label" style="top: 45px; left: 12px;">4CH</div>
+                        <div class="ultrasound-label" style="top: 45px; right: 70px; color: #ff0;">Color</div>
+                        <div class="scale"></div>
+                        <div class="color-bar"></div>
+                        <div class="ultrasound-label" style="bottom: 18px; left: 75px; font-size: 9px;">血流方向</div>
+                    </div>
+                </div>
+
+                <div style="color: #0f0; font-size: 10px; font-family: 'Roboto Mono', monospace; margin-top: 6px; text-align: right;">
+                    Frame Rate: 28Hz &nbsp; | &nbsp; Focus: 8cm &nbsp; | &nbsp; 北京美中宜和超声科
+                </div>
             </div>
         </div>
 
         <!-- Findings -->
         <div class="section">
             <div class="section-title">检查所见</div>
-            <div class="findings">{{ report[18] or '胎儿各系统结构显示清晰，颅内结构正常，心脏四腔心可见，脊柱连续，腹部脏器位置正常，四肢长骨形态正常。' }}</div>
+            <div class="findings">{{ report[21] or '胎儿各系统结构显示清晰，颅内结构正常，心脏四腔心可见，脊柱连续，腹部脏器位置正常，四肢长骨形态正常。' }}</div>
         </div>
 
         <!-- Impression -->
         <div class="section">
             <div class="section-title">检查印象</div>
             <div style="font-size:14px; font-weight:600; color:#004d80; line-height:1.7;">
-                {{ report[19] or '单活胎，胎儿生长发育符合孕周，结构未见明显异常。建议按时产检。' }}
+                {{ report[22] or '单活胎，胎儿生长发育符合孕周，结构未见明显异常。建议按时产检。' }}
             </div>
         </div>
 
         <!-- Recommendations -->
- <div class="section">
+        <div class="section">
             <div class="section-title">建议</div>
-            <div style="font-size:13px;">{{ report[20] or '1. 定期产前检查，监测胎儿生长。\n2. 建议22-24周行胎儿心脏超声筛查。\n3. 如有不适及时就诊。' }}</div>
+            <div style="font-size:13px;">{{ report[23] or '1. 定期产前检查，监测胎儿生长。\n2. 建议22-24周行胎儿心脏超声筛查。\n3. 如有不适及时就诊。' }}</div>
         </div>
 
-        <!-- Signature Area - Real hospital style -->
+        <!-- Signature Area -->
         <div class="signature-area">
             <div class="sig-box">
                 <div style="font-weight:600; margin-bottom:5px;">超声检查医师</div>
                 <div class="sig-line"></div>
-                <div style="font-size:12px; margin-top:3px;">{{ report[21] or '签名' }} &nbsp;&nbsp; {{ report[3] }}</div>
+                <div style="font-size:12px; margin-top:3px;">{{ report[24] or '签名' }} &nbsp;&nbsp; {{ report[3] }}</div>
                 <div class="stamp">美中宜和<br>超声科章</div>
             </div>
             <div class="sig-box">
@@ -158,15 +189,13 @@
         <div class="disclaimer">本报告仅供临床参考，不作为法律依据。报告解释权归北京美中宜和妇儿医院所有。</div>
 
         <div class="footer">
-            北京美中宜和妇儿医院 · 产前诊断中心 &nbsp;|&nbsp; 报告编号: {{ report[2] or 'UL' + report[3].replace('-','') }} &nbsp;|&nbsp; 打印时间: {{ report[22] or 'now' }}<br>
-            设备: GE Voluson E10 / Samsung Hera W10 &nbsp;|&nbsp; 操作者: {{ report[21] or '-' }}
+            北京美中宜和妇儿医院 · 产前诊断中心 &nbsp;|&nbsp; 报告编号: {{ report[2] or 'UL' + report[3].replace('-','') }} &nbsp;|&nbsp; 打印时间: {{ report[25] or 'now' }}<br>
+            设备: GE Voluson E10 &nbsp;|&nbsp; 操作者: {{ report[24] or '-' }}
         </div>
     </div>
 
     <script>
-        // Print helper
         function printReport() { window.print(); }
-        // Auto focus print on load if needed
     </script>
 </body>
 </html>
