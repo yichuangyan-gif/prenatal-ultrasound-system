@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8088:8088"
+    volumes:
+      - .:/app
+      - ./ultrasound_system.db:/app/ultrasound_system.db
+      - ./static/uploads:/app/static/uploads
+      - ./reports:/app/reports
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+
+  # 本地AI模型服务 (Ollama + Stable Diffusion 支持)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # 启动时拉取常用模型 (可选)
+    # command: ["ollama", "run", "llama3.2-vision"]
+
+volumes:
+  ollama_data:
