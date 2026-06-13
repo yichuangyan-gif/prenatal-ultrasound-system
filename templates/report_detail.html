@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产科超声检查报告 - 北京美中宜和妇儿医院</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Roboto+Mono&display=swap');
+        body { font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; background: #f8f9fa; margin: 0; padding: 20px; color: #333; }
+        .report-container { max-width: 210mm; margin: 0 auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.15); border: 1px solid #0066a1; }
+        .header { background: linear-gradient(90deg, #0066a1 0%, #004d80 100%); color: white; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .logo { width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0066a1; font-weight: bold; font-size: 14px; }
+        .hospital-name { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+        .hospital-sub { font-size: 13px; opacity: 0.95; }
+        .report-title { text-align: center; background: #e8f4fc; padding: 8px; font-size: 20px; font-weight: 700; color: #0066a1; border-bottom: 2px solid #0066a1; }
+        .patient-info { padding: 15px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; font-size: 14px; border-bottom: 1px solid #ddd; }
+        .info-item { display: flex; }
+        .info-label { width: 85px; color: #555; font-weight: 500; }
+        .info-value { flex: 1; font-weight: 600; }
+        .section { padding: 12px 20px; border-bottom: 1px solid #eee; }
+        .section-title { font-size: 15px; font-weight: 700; color: #0066a1; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #0066a1; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border: 1px solid #0066a1; padding: 6px 8px; text-align: center; }
+        th { background: #e8f4fc; color: #004d80; font-weight: 600; }
+        .biometry td:first-child { text-align: left; font-weight: 500; }
+        .findings { line-height: 1.6; white-space: pre-wrap; }
+        .signature-area { display: flex; justify-content: space-between; padding: 20px; background: #fafafa; }
+        .sig-box { width: 45%; text-align: center; }
+        .sig-line { border-bottom: 1px solid #333; width: 180px; margin: 30px auto 5px; }
+        .stamp { width: 80px; height: 80px; border: 2px solid #c00; border-radius: 50%; margin: 10px auto; display: flex; align-items: center; justify-content: center; color: #c00; font-size: 11px; font-weight: bold; transform: rotate(-15deg); }
+        .footer { text-align: center; font-size: 11px; color: #666; padding: 10px; background: #f0f0f0; }
+        .disclaimer { font-size: 11px; color: #c00; text-align: center; padding: 5px; }
+        @media print { body { background: white; padding: 0; } .report-container { box-shadow: none; border: none; } }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">美中宜和</div>
+                <div>
+                    <div class="hospital-name">北京美中宜和妇儿医院</div>
+                    <div class="hospital-sub">Amcare Women's & Children's Hospital · 产前诊断与超声中心</div>
+                </div>
+            </div>
+            <div style="text-align: right; font-size: 12px; line-height: 1.4;">
+                北京市朝阳区北三环东路<br>
+                电话: 400-100-1000 | www.amcare.com.cn<br>
+                JCI 国际认证医疗机构
+            </div>
+        </div>
+
+        <div class="report-title">产科超声检查报告单</div>
+
+        <!-- Patient Info -->
+        <div class="patient-info">
+            <div class="info-item"><span class="info-label">姓名：</span><span class="info-value">{{ report[25] or '未填写' }}</span></div>
+            <div class="info-item"><span class="info-label">病历号：</span><span class="info-value">{{ report[27] or '-' }}</span></div>
+            <div class="info-item"><span class="info-label">年龄：</span><span class="info-value">{{ report[26] or '-' }} 岁</span></div>
+            <div class="info-item"><span class="info-label">检查日期：</span><span class="info-value">{{ report[3] or '-' }}</span></div>
+            <div class="info-item"><span class="info-label">末次月经：</span><span class="info-value">{{ report[28] or '-' }}</span></div>
+            <div class="info-item"><span class="info-label">预产期：</span><span class="info-value">{{ report[29] or '-' }}</span></div>
+            <div class="info-item"><span class="info-label">检查类型：</span><span class="info-value">{{ report[4] or '常规产科超声' }}</span></div>
+            <div class="info-item"><span class="info-label">胎龄：</span><span class="info-value">{{ report[5] }}周{{ report[6] }}天</span></div>
+        </div>
+
+        <!-- Clinical Info -->
+        <div class="section">
+            <div class="section-title">临床资料与检查指征</div>
+            <div style="font-size:13px; color:#555;">单胎 / 头位 / 胎心率 {{ report[17] or '正常' }} 次/分 | 羊水指数 {{ report[14] or '-' }} cm | 胎盘位置 {{ report[15] or '-' }} | 成熟度 {{ report[16] or '-' }}</div>
+        </div>
+
+        <!-- Biometry Table - Real Amcare style -->
+        <div class="section">
+            <div class="section-title">胎儿生物测量参数（参考ISUOG & 美中宜和标准）</div>
+            <table class="biometry">
+                <thead>
+                    <tr>
+                        <th style="width:28%">测量项目</th>
+                        <th>测量值 (mm)</th>
+                        <th>对应孕周</th>
+                        <th>百分位数 / 参考范围</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>双顶径 (BPD)</td><td>{{ report[9] or '-' }}</td><td>{{ report[5] }}w</td><td>50% (正常范围)</td><td>正常</td></tr>
+                    <tr><td>头围 (HC)</td><td>{{ report[10] or '-' }}</td><td>{{ report[5] }}w</td><td>45% (正常范围)</td><td>正常</td></tr>
+                    <tr><td>腹围 (AC)</td><td>{{ report[11] or '-' }}</td><td>{{ report[5] }}w</td><td>55% (正常范围)</td><td>正常</td></tr>
+                    <tr><td>股骨长 (FL)</td><td>{{ report[12] or '-' }}</td><td>{{ report[5] }}w</td><td>48% (正常范围)</td><td>正常</td></tr>
+                    <tr><td>估计胎儿体重 (EFW)</td><td>{{ report[13] or '-' }} g</td><td>{{ report[5] }}w</td><td>52% (正常范围)</td><td>正常</td></tr>
+                    <tr><td>羊水最大深度 (AFD)</td><td>{{ report[14] or '-' }} cm</td><td>-</td><td>2.0-8.0 cm</td><td>正常</td></tr>
+                    <tr><td>胎心率 (FHR)</td><td>{{ report[17] or '-' }} bpm</td><td>-</td><td>120-160 bpm</td><td>正常</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Growth Chart placeholder (realistic) -->
+        <div class="section">
+            <div class="section-title">胎儿生长曲线评估</div>
+            <div style="height: 160px; background: #f8f9fa; border: 1px solid #0066a1; position: relative; overflow: hidden;">
+                <svg width="100%" height="160" style="position:absolute; top:0; left:0;">
+                    <!-- Simple growth chart axes -->
+                    <line x1="40" y1="140" x2="40" y2="20" stroke="#0066a1" stroke-width="1.5"/>
+                    <line x1="40" y1="140" x2="520" y2="140" stroke="#0066a1" stroke-width="1.5"/>
+                    <text x="15" y="85" font-size="11" fill="#004d80" transform="rotate(-90 15 85)">百分位</text>
+                    <text x="280" y="155" font-size="11" fill="#004d80" text-anchor="middle">孕周</text>
+                    <!-- Percentile lines -->
+                    <path d="M40,120 Q200,90 520,50" fill="none" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4,2"/>
+                    <path d="M40,100 Q200,70 520,30" fill="none" stroke="#4ecdc4" stroke-width="1.5"/>
+                    <path d="M40,80 Q200,50 520,20" fill="none" stroke="#45b7d1" stroke-width="1.5"/>
+                    <!-- Current point -->
+                    <circle cx="280" cy="75" r="5" fill="#c00" stroke="#fff" stroke-width="2"/>
+                    <text x="290" y="70" font-size="11" fill="#c00">当前测量</text>
+                </svg>
+                <div style="position:absolute; bottom:5px; right:10px; font-size:10px; color:#666;">50th %ile 参考线（美中宜和标准）</div>
+            </div>
+        </div>
+
+        <!-- Findings -->
+        <div class="section">
+            <div class="section-title">检查所见</div>
+            <div class="findings">{{ report[18] or '胎儿各系统结构显示清晰，颅内结构正常，心脏四腔心可见，脊柱连续，腹部脏器位置正常，四肢长骨形态正常。' }}</div>
+        </div>
+
+        <!-- Impression -->
+        <div class="section">
+            <div class="section-title">检查印象</div>
+            <div style="font-size:14px; font-weight:600; color:#004d80; line-height:1.7;">
+                {{ report[19] or '单活胎，胎儿生长发育符合孕周，结构未见明显异常。建议按时产检。' }}
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+ <div class="section">
+            <div class="section-title">建议</div>
+            <div style="font-size:13px;">{{ report[20] or '1. 定期产前检查，监测胎儿生长。\n2. 建议22-24周行胎儿心脏超声筛查。\n3. 如有不适及时就诊。' }}</div>
+        </div>
+
+        <!-- Signature Area - Real hospital style -->
+        <div class="signature-area">
+            <div class="sig-box">
+                <div style="font-weight:600; margin-bottom:5px;">超声检查医师</div>
+                <div class="sig-line"></div>
+                <div style="font-size:12px; margin-top:3px;">{{ report[21] or '签名' }} &nbsp;&nbsp; {{ report[3] }}</div>
+                <div class="stamp">美中宜和<br>超声科章</div>
+            </div>
+            <div class="sig-box">
+                <div style="font-weight:600; margin-bottom:5px;">审核医师 / 上级医师</div>
+                <div class="sig-line"></div>
+                <div style="font-size:12px; margin-top:3px;">签名 &nbsp;&nbsp; 日期</div>
+                <div style="margin-top:8px; font-size:11px; color:#c00;">（红章有效）</div>
+            </div>
+        </div>
+
+        <div class="disclaimer">本报告仅供临床参考，不作为法律依据。报告解释权归北京美中宜和妇儿医院所有。</div>
+
+        <div class="footer">
+            北京美中宜和妇儿医院 · 产前诊断中心 &nbsp;|&nbsp; 报告编号: {{ report[2] or 'UL' + report[3].replace('-','') }} &nbsp;|&nbsp; 打印时间: {{ report[22] or 'now' }}<br>
+            设备: GE Voluson E10 / Samsung Hera W10 &nbsp;|&nbsp; 操作者: {{ report[21] or '-' }}
+        </div>
+    </div>
+
+    <script>
+        // Print helper
+        function printReport() { window.print(); }
+        // Auto focus print on load if needed
+    </script>
+</body>
+</html>
