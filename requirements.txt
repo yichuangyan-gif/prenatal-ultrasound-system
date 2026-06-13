@@ -6,3 +6,11 @@ Pillow==10.1.0
 requests==2.31.0
 python-dotenv==1.0.0
 Werkzeug==2.3.7
+# 未来迁移到 FastAPI + Next.js
+fastapi==0.115.0
+uvicorn==0.30.0
+python-multipart==0.0.9
+# 本地AI支持
+httpx==0.27.0
+cryptography==42.0.0
+# 数据加密备份
